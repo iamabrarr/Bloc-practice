@@ -27,12 +27,12 @@ const List names = ['abrar', 'ali', 'imtiaz'];
 Random rand = Random();
 
 extension RandomElement<T> on Iterable<T> {
-  T getRandomElements() => elementAt(length);
+  T getRandomElements() => elementAt(rand.nextInt(length));
 }
 
 class NameCubit extends Cubit<String?> {
   NameCubit() : super(null);
-  void pickRandomName()=>emit(names.getRandomElements());
+  void pickRandomName() => emit(names.getRandomElements());
 }
 
 class MyHomePage extends StatefulWidget {
@@ -44,11 +44,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final NameCubit cubit;
+  @override
+  void initState() {
+    super.initState();
+    cubit = NameCubit();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    cubit.close();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      body: StreamBuilder<String?>(
+        stream: cubit.stream,
+        builder: (context, snapshot) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${snapshot.data}'),
+                TextButton(onPressed: (){
+                  cubit.pickRandomName();
+                }, child: const Text('Pick random number'))
+              ],
+            ),
+          );
+        }
       ),
     );
   }
