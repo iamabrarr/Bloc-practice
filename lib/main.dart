@@ -1,11 +1,49 @@
-import 'dart:math';
-
-import 'package:bloc/bloc.dart';
+import 'package:bloc_practice/features/home/ui/home.dart';
 import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'vendad course/vendad_course.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+// @immutable
+// abstract class LoadAction {
+//   const LoadAction();
+//   void addNumber() {}
+// }
+
+// @immutable
+// class LoadPersonsAction extends LoadAction {
+//   final PersonUrls url;
+
+//   LoadPersonsAction({required this.url}) : super();
+// }
+
+// @immutable
+// class Person {
+//   final String name;
+//   final String age;
+//   const Person({required this.age, required this.name});
+//   Person.formJson(Map<String, dynamic> json)
+//       : name = json['name'],
+//         age = json['age'];
+// }
+
+// enum PersonUrls { person1, person2 }
+
+// extension UrlString on PersonUrls {
+//   String get urlString {
+//     switch (this) {
+//       case PersonUrls.person1:
+//         return 'http://127.0.0.1:5500/api/persons.json';
+//       case PersonUrls.person2:
+//         return 'http://127.0.0.1:5500/api/persons2.json';
+//     }
+//   }
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -18,67 +56,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Bloc Practice'),
-    );
-  }
-}
-
-const List names = ['abrar', 'ali', 'imtiaz'];
-Random rand = Random();
-
-extension RandomElement<T> on Iterable<T> {
-  T getRandomElements() => elementAt(rand.nextInt(length));
-}
-
-class NameCubit extends Cubit<String?> {
-  NameCubit() : super(null);
-  void pickRandomName() => emit(names.getRandomElements());
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  late final NameCubit cubit;
-  @override
-  void initState() {
-    super.initState();
-    cubit = NameCubit();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    cubit.close();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: StreamBuilder<String?>(
-        stream: cubit.stream,
-        builder: (context, snapshot) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('${snapshot.data}'),
-                TextButton(onPressed: (){
-                  cubit.pickRandomName();
-                }, child: const Text('Pick random number'))
-              ],
-            ),
-          );
-        }
-      ),
+      home:  MainPage(),
     );
   }
 }
