@@ -56,7 +56,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  MainPage(),
+      home: BlocProvider(
+        create: (_) => PersonBloc(),
+        child: MainPage(),
+      ),
     );
   }
 }
